@@ -1,12 +1,12 @@
 # 🛒 E-Commerce SQL Analysis
 
-Exploratory data analysis on a real-world e-commerce dataset using **SQL** and **DuckDB / DataCamp DataLab**.  
+Exploratory data analysis on a real-world e-commerce dataset using **SQL** and **DataCamp DataLab**.  
 This project answers key business questions around revenue, customer behavior, product performance, and data quality.
 
 ![SQL](https://img.shields.io/badge/Language-SQL-blue)
 ![DuckDB](https://img.shields.io/badge/Tool-DuckDB-yellow)
 ![DataLab](https://img.shields.io/badge/Platform-DataCamp%20DataLab-03EF62)
-![Status](https://img.shields.io/badge/Status-In%20Progress-orange)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
 
 ---
 
@@ -14,9 +14,7 @@ This project answers key business questions around revenue, customer behavior, p
 
 ```
 E-Commerce-SQL-Analysis/
-├── data/
-│   └── online_retail.csv        ← download from UCI link below
-├── analysis.sql
+├── analysis.sql       ← all 10 SQL queries
 └── README.md
 ```
 
@@ -40,8 +38,6 @@ Transnational transaction data from a UK-based online retailer (December 2010 �
 | CustomerID | Unique customer identifier *(nullable)* |
 | Country | Country of customer residence |
 
-> **To use locally:** Download `Online Retail.xlsx` from the UCI link above, convert to CSV, and save as `data/online_retail.csv`
-
 ---
 
 ## ❓ Key Questions
@@ -58,54 +54,60 @@ Transnational transaction data from a UK-based online retailer (December 2010 �
 
 | # | Query | Description |
 |---|---|---|
-| 01 | Explore the data | Preview first 10 rows |
-| 02 | Total row count | Data quality check |
-| 03 | Missing CustomerIDs | Count null customer records |
-| 04 | Clean dataset | Filter nulls + parse timestamps |
+| 01 | Explore the data | Preview first 10 rows of the dataset |
+| 02 | Total row count | Verify total number of records |
+| 03 | Missing CustomerIDs | Count rows with no customer identifier |
+| 04 | Clean dataset | Filter nulls and invalid transactions |
 | 05 | Sales by country | Total revenue grouped by country |
-| 06 | Top customers | Ranked by total spend |
-| 07 | Best-selling products | Top 10 by quantity sold |
+| 06 | Top customers | Top 10 customers ranked by total spend |
+| 07 | Best-selling products | Top 10 products by quantity sold |
 | 08 | Missing data by country | Null CustomerID rate per country |
-| 09 | Monthly revenue trend | Month-over-month sales |
-| 10 | Average order value | By country |
+| 09 | Monthly revenue trend | Month-over-month revenue and order count |
+| 10 | Average order value | Average spend per order by country |
 
 ---
 
 ## 💡 Key Insights
 
-- **United Kingdom** generates the majority of total sales
-- A notable percentage of rows have **missing CustomerIDs**, limiting customer-level analysis
-- A **small number of customers** drive a disproportionately large share of revenue
-- Revenue shows clear **seasonal trends** across the year
+- **United Kingdom** dominates total sales, contributing the vast majority of revenue
+- A **small number of customers** drive a disproportionately large share of total spend
+- A significant percentage of transactions have **missing CustomerIDs**, particularly from certain countries, which limits customer-level analysis
+- Revenue shows a clear **upward trend toward Q4**, reflecting seasonal demand peaks
+- The **top 10 best-selling products** are predominantly gift and home décor items
+
+---
+
+## ⚙️ Technical Notes
+
+All queries are written in **DuckDB SQL** and run on DataCamp DataLab.  
+Dates in the CSV follow the format `MM/DD/YY HH:MM` — parsed using:
+
+```sql
+FROM read_csv('online_retail.csv',
+    header          = true,
+    timestampformat = '%m/%d/%y %H:%M'
+)
+```
+
+Data cleaning applied across all analysis queries:
+- Removed rows where `CustomerID IS NULL`
+- Excluded rows where `Quantity <= 0` (returns/cancellations)
+- Excluded rows where `UnitPrice <= 0` (invalid pricing)
 
 ---
 
 ## 🚀 How to Run
 
-**Option 1 — DataCamp DataLab**
+**DataCamp DataLab**
 1. Open [DataCamp DataLab](https://www.datacamp.com/datalab)
 2. Add **E-Commerce Data** as a data source
-3. Paste queries from `analysis.sql` into a SQL cell and run
+3. Copy queries from `analysis.sql` into a SQL cell and run
 
-**Option 2 — DuckDB CLI**
+**DuckDB CLI**
 ```bash
-# Install DuckDB
 pip install duckdb
-
-# Launch CLI and run the full script
 duckdb
 .read analysis.sql
-```
-
-**Option 3 — Python**
-```python
-import duckdb
-
-conn = duckdb.connect()
-with open('analysis.sql') as f:
-    queries = f.read()
-
-conn.execute(queries)
 ```
 
 ---
@@ -116,8 +118,8 @@ conn.execute(queries)
 |---|---|
 | SQL | Data querying and analysis |
 | DuckDB | In-process analytical SQL engine |
-| DataCamp DataLab | Cloud notebook environment |
-| GitHub | Version control and portfolio |
+| DataCamp DataLab | Cloud SQL notebook environment |
+| GitHub | Version control and portfolio hosting |
 
 ---
 

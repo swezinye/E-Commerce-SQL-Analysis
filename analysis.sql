@@ -1,10 +1,11 @@
 -- ============================================================
 -- E-Commerce SQL Analysis
--- Dataset: UCI Online Retail
+-- Dataset: UCI Online Retail (online_retail.csv)
 -- Platform: DataCamp DataLab
--- Note:     Data source is available as df5
---           No CSV file path needed - always use df5
 -- Author:   swezinye
+-- ============================================================
+-- NOTE: All queries use read_csv with timestampformat = '%m/%d/%y %H:%M'
+--       This correctly parses dates like "12/13/10 9:02"
 -- ============================================================
 
 
@@ -13,7 +14,10 @@
 --     Preview the first 10 rows of the raw dataset
 -- ------------------------------------------------------------
 SELECT *
-FROM df5
+FROM read_csv('online_retail.csv',
+    header          = true,
+    timestampformat = '%m/%d/%y %H:%M'
+)
 LIMIT 10;
 
 
@@ -22,7 +26,10 @@ LIMIT 10;
 --     Verify how many records are in the dataset
 -- ------------------------------------------------------------
 SELECT COUNT(*) AS total_rows
-FROM df5;
+FROM read_csv('online_retail.csv',
+    header          = true,
+    timestampformat = '%m/%d/%y %H:%M'
+);
 
 
 -- ------------------------------------------------------------
@@ -30,7 +37,10 @@ FROM df5;
 --     Count how many rows have no customer identifier
 -- ------------------------------------------------------------
 SELECT COUNT(*) AS missing_customer_ids
-FROM df5
+FROM read_csv('online_retail.csv',
+    header          = true,
+    timestampformat = '%m/%d/%y %H:%M'
+)
 WHERE CustomerID IS NULL;
 
 
@@ -40,7 +50,10 @@ WHERE CustomerID IS NULL;
 -- ------------------------------------------------------------
 WITH clean_retail AS (
     SELECT *
-    FROM df5
+    FROM read_csv('online_retail.csv',
+        header          = true,
+        timestampformat = '%m/%d/%y %H:%M'
+    )
     WHERE CustomerID IS NOT NULL
       AND Quantity  > 0
       AND UnitPrice > 0
@@ -56,7 +69,10 @@ LIMIT 10;
 -- ------------------------------------------------------------
 WITH retail AS (
     SELECT *
-    FROM df5
+    FROM read_csv('online_retail.csv',
+        header          = true,
+        timestampformat = '%m/%d/%y %H:%M'
+    )
     WHERE CustomerID IS NOT NULL
       AND Quantity  > 0
       AND UnitPrice > 0
@@ -76,7 +92,10 @@ ORDER BY total_sales DESC;
 -- ------------------------------------------------------------
 WITH retail AS (
     SELECT *
-    FROM df5
+    FROM read_csv('online_retail.csv',
+        header          = true,
+        timestampformat = '%m/%d/%y %H:%M'
+    )
     WHERE CustomerID IS NOT NULL
       AND Quantity  > 0
       AND UnitPrice > 0
@@ -98,7 +117,10 @@ LIMIT 10;
 -- ------------------------------------------------------------
 WITH retail AS (
     SELECT *
-    FROM df5
+    FROM read_csv('online_retail.csv',
+        header          = true,
+        timestampformat = '%m/%d/%y %H:%M'
+    )
     WHERE CustomerID IS NOT NULL
       AND Quantity  > 0
       AND UnitPrice > 0
@@ -120,7 +142,10 @@ LIMIT 10;
 -- ------------------------------------------------------------
 WITH retail AS (
     SELECT *
-    FROM df5
+    FROM read_csv('online_retail.csv',
+        header          = true,
+        timestampformat = '%m/%d/%y %H:%M'
+    )
 )
 SELECT
     Country,
@@ -142,7 +167,10 @@ ORDER BY missing_customer_ids DESC;
 -- ------------------------------------------------------------
 WITH retail AS (
     SELECT *
-    FROM df5
+    FROM read_csv('online_retail.csv',
+        header          = true,
+        timestampformat = '%m/%d/%y %H:%M'
+    )
     WHERE CustomerID IS NOT NULL
       AND Quantity  > 0
       AND UnitPrice > 0
@@ -162,7 +190,10 @@ ORDER BY year_month ASC;
 -- ------------------------------------------------------------
 WITH retail AS (
     SELECT *
-    FROM df5
+    FROM read_csv('online_retail.csv',
+        header          = true,
+        timestampformat = '%m/%d/%y %H:%M'
+    )
     WHERE CustomerID IS NOT NULL
       AND Quantity  > 0
       AND UnitPrice > 0
